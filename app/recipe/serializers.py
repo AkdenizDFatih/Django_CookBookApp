@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from ingredient.serializers import IngredientSerializer
 from user.serializers import UserSerializer
 from recipe.models import Recipe
 
@@ -11,5 +12,15 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = '__all__'
 
-    def get_difficulty(self, obj):
-        return obj.get_display
+
+class RecipeOnlySerializer(serializers.ModelSerializer):
+    difficulty = serializers.SerializerMethodField()
+    ingredients = IngredientSerializer(many=True)
+
+    @staticmethod
+    def get_difficulty(obj):
+        return [tup for tup in obj.DIFFICULTY_CHOICES if tup[0] == obj.difficulty][0][1]
+
+    class Meta:
+        model = Recipe
+        fields = ['title', 'description', 'difficulty', 'created', 'updated', 'ingredients']

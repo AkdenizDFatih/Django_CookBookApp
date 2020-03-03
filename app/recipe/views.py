@@ -1,9 +1,11 @@
 from rest_framework import filters
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, UpdateAPIView, GenericAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from recipe.models import Recipe
 from recipe.serializers import RecipeSerializer
+from user.permissions import IsObjectAuthorOrReadOnly, ReadOnly
 
 
 class ListCreateRecipe(ListCreateAPIView):
@@ -19,6 +21,7 @@ class ListCreateRecipe(ListCreateAPIView):
     serializer_class = RecipeSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'description']
+    permission_classes = [IsAuthenticated | ReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -42,6 +45,7 @@ class ReadUpdateDeleteRecipe(RetrieveUpdateDestroyAPIView):
     queryset = Recipe
     serializer_class = RecipeSerializer
     lookup_url_kwarg = 'recipe_id'
+    permission_classes = [IsObjectAuthorOrReadOnly]
 
 
 class ToggleStarringRecipe(GenericAPIView):

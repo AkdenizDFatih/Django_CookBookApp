@@ -1,10 +1,12 @@
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 
 from cookbook.models import Cookbook
-from cookbook.serializers import CookbookSerializer
+from cookbook.serializers import CookbookSerializer, CookbookDetailedSerializer
+from user.permissions import IsObjectAuthorOrReadOnly, ReadOnly
 
 
 class ListCreateCookbook(GenericAPIView):
@@ -19,6 +21,7 @@ class ListCreateCookbook(GenericAPIView):
 
     queryset = Cookbook.objects.all()
     serializer_class = CookbookSerializer
+    permission_classes = [IsAuthenticated | ReadOnly]
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
@@ -48,8 +51,9 @@ class ReadUpdateDeleteCookbook(GenericAPIView):
     """
 
     queryset = Cookbook
-    serializer_class = CookbookSerializer
+    serializer_class = CookbookDetailedSerializer
     lookup_url_kwarg = 'cookbook_id'
+    permission_classes = [IsObjectAuthorOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         cookbook = self.get_object()
