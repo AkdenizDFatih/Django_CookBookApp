@@ -47,6 +47,14 @@ class ReadUpdateDeleteRecipe(RetrieveUpdateDestroyAPIView):
     lookup_url_kwarg = 'recipe_id'
     permission_classes = [IsObjectAuthorOrReadOnly]
 
+    # How to do it with GenericAPIView / manually
+    # def update(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data, partial=True)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data)
+
 
 class ToggleStarringRecipe(GenericAPIView):
     """
