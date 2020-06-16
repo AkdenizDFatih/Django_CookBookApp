@@ -7,7 +7,7 @@
 
 ## Recipe views
 
-- Written with generic class based views
+- Written with Concrete View Classes
 - Search applied with django SearchFilter
 
 ## After having cloned the project, you can run it like this:
