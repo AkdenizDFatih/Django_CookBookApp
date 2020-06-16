@@ -10,16 +10,12 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = '__all__'
+        fields = ['id', 'author', 'title', 'description', 'difficulty', 'created', 'updated', 'cookbooks', 'ingredients', 'starred_by']
 
 
 class RecipeOnlySerializer(serializers.ModelSerializer):
-    difficulty = serializers.SerializerMethodField()
+    difficulty = serializers.CharField(source='get_difficulty_display')
     ingredients = IngredientSerializer(many=True)
-
-    @staticmethod
-    def get_difficulty(obj):
-        return [tup for tup in obj.DIFFICULTY_CHOICES if tup[0] == obj.difficulty][0][1]
 
     class Meta:
         model = Recipe
