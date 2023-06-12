@@ -76,7 +76,7 @@ class ReadUpdateDeleteCookbook(GenericAPIView):
 class ToggleStarringCookbook(GenericAPIView):
     """
     patch:
-    Toggle starring recipe by logged in user
+    Toggle starring recipe by logged in user. No body needs to be sent, only the Cookbook ID by URL
     """
 
     queryset = Cookbook

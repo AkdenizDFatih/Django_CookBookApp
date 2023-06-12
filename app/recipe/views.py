@@ -59,7 +59,7 @@ class ReadUpdateDeleteRecipe(RetrieveUpdateDestroyAPIView):
 class ToggleStarringRecipe(GenericAPIView):
     """
     patch:
-    Toggle starring recipe by logged in user
+    Toggle starring recipe by logged in user. No body needs to be sent, only the Recipe ID by URL
     """
 
     queryset = Recipe
